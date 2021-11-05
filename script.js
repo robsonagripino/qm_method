@@ -13,7 +13,6 @@ function radi(){
         input.addEventListener('click', a(i.toString()) );
         input.name = 0;
        
-
         var label = document.createElement('label');
         label.for = i.toString();
         label.innerHTML = i;
@@ -32,9 +31,7 @@ function radi(){
 
 var minitermos = [];
 
-
 a = function onOff(id){
-   
     return () =>{
         div = document.getElementById('div'+id);
         intId = parseInt(id);
@@ -45,10 +42,7 @@ a = function onOff(id){
         if(minitermos[intId]% 3 == 2){
             document.getElementById(id).checked = true;
             div.className = 'dontcare';
-          
         }
-
-    
     }
 }
 

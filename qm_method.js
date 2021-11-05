@@ -7,7 +7,6 @@ function primeImplicantsChart(pi, mt){
     tab.cellpadding= "5";
     tab.style = 'margin: 15px';
 
-
     var content = document.getElementById('tableContent');
     content.appendChild(tab);
  
@@ -26,7 +25,6 @@ function primeImplicantsChart(pi, mt){
         var td = document.createElement('td');
         td.appendChild(primes);
         tr.appendChild(td);
- 
     }
 
     tab.appendChild(tr);
@@ -58,6 +56,7 @@ function primeImplicantsChart(pi, mt){
         }
         tab.appendChild(tr);
     }
+    f();
 }
  
 function inArray(array, valor){
@@ -200,7 +199,6 @@ function makeTable(table){
     }
 }
  
- 
 function representacaoVar(min){
     var variaveis = 'ABCDEFGHIJK';
     var pi = '';
@@ -252,15 +250,10 @@ function qntZeros(bin, n){
     return bin;
 }
 
-
-
 var tabelas = [];
 var primeImpli = [];
-
 var minitermosSemDontCares = [];
-//DontCares
-var dontCares = [];//[2, 9, 15];
-
+var dontCares = [];
 var varNum = 0;
 
 function run(){
@@ -269,24 +262,22 @@ function run(){
     dontCares = [];
     primeImpli = [];
 
-
     //Número de variáveis
     varNum = document.getElementById('numVariaveis').value;
-    //Minitermos
+    
     var m = document.querySelectorAll('#radioContent > div');//[0,1,2,5,6,7];//[0,2,3,5,6,7,9,10,12,13,15];
     
 
     for(var i = 0; i < m.length; i++){
         if(m[i].children[0].checked){
             if(m[i].className == 'dontcare')
+                //Lista de dont cares
                 dontCares.push(parseInt(m[i].children[0].id))
             else
+                //Lista de minitermos
                 minitermosSemDontCares.push(parseInt(m[i].children[0].id));
-            
         }
     }
-
-    
 
     //Minitemos + dontCares
     var minitermos = copyArray([], minitermosSemDontCares);
@@ -301,9 +292,6 @@ function run(){
         miniBin.push(bin);
     }
     
-    //console.log(miniBin);
-    
-
     //STEP 1
     var grupos = [];
     for(var i = 0; i <= varNum; i++){
@@ -314,12 +302,8 @@ function run(){
         qnt = contUm(miniBin[i]);
         grupos[qnt].push([minitermos[i].toString(), miniBin[i], 0]); //Minitermos | Representação binária
     }
-    
-    //makeTable(grupos);
 
     //STEP 2
-
-
     
     var noMarge = 0;
     
@@ -358,7 +342,10 @@ function run(){
     for(var tabs = 0; tabs < tabelas.length; tabs++)
         makeTable(tabelas[tabs]);
 
+ 
     primeImplicantsChart(primeImpli, minitermosSemDontCares);
+   
+
 }
 
 function f(){
@@ -372,28 +359,30 @@ function f(){
         text += variaveis[i]+", ";
     }
 
-    text = text.substr(0, text.length-1);
+    text = text.substr(0, text.length-2);
     text += ") = &#8721 m(";
 
+    var l = 0;
     for(var i = 0; i < minitermosSemDontCares.length; i++){
         text += minitermosSemDontCares[i].toString()+',';
+        l = 1;
     }
     
-    text = text.substr(0, text.length-1);
+    text = text.substr(0, text.length-l);
     text += ") + &#8721 d(";
 
+    l = 0;
     for(var i = 0; i < dontCares.length; i++){
         text += dontCares[i].toString()+',';
+        l = 1;
     }
 
-    text = text.substr(0, text.length-1);
+    text = text.substr(0, text.length-l);
     text += ')';
-
 
     p = document.createElement('p');
     p.innerHTML = text;
     mt.appendChild(p);
 
     return text;
-   
 }
