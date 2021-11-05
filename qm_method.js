@@ -1,66 +1,7 @@
-// function primeImplicantsChart1(pi, mt){
-//     // var tab = document.getElementById('tabela');
-//     // tab.innerHTML = null;
-
-//     var tab = document.createElement('table');
-//     tab.border = '1';
-//     tab.cellpadding= "5";
-
-//     var content = document.getElementById('tableContent');
-//     content.appendChild(tab);
-
-
-
-//     var primes = document.createElement('text');
-//     primes.innerHTML = "Primes";
-//     var td = document.createElement('td');
-//     td.appendChild(primes);
- 
-//     var tr = document.createElement('tr');
-//     tr.style = "text-align: center";
-//     tr.appendChild(td);
- 
-//     for(var i = 0; i < mt.length; i++){
-//         var primes = document.createElement('text');
-//         primes.innerHTML = mt[i];
-//         var td = document.createElement('td');
-//         td.appendChild(primes);
-//         tr.appendChild(td);
- 
-//     }
-
-//     tab.appendChild(tr);
-//     for(var i = 0; i < pi.length; i++){
-//         var primes = document.createElement('text');
-//         primes.innerHTML = pi[i];
-//         var td = document.createElement('td');
-//         td.appendChild(primes);
- 
-//         var tr = document.createElement('tr');
-//         tr.style = "text-align: center";
-//         tr.appendChild(td);
- 
-//         var c = covered(mt[i]);
-     
-//         for(var j = 0; j < mt.length; j++){
-//             var txt = document.createElement('text');
-             
-//             txt.innerHTML = '';
-//             bin = pi[j].toString(2);
-//             bin = qntZeros(bin, varNum);
-//             if(inArray(c, bin) != 0){
-//                     txt.innerHTML = "X";
-                     
-//             }   
-//             var td = document.createElement('td');
-//             td.appendChild(txt);
-//             tr.appendChild(td);
-//         }
-//         tab.appendChild(tr);
-//     }
-// }
-
 function primeImplicantsChart(pi, mt){
+    if(mt.length == 0)
+        return;
+
     var tab = document.createElement('table');
     tab.border = '1';
     tab.cellpadding= "5";
@@ -91,7 +32,7 @@ function primeImplicantsChart(pi, mt){
     tab.appendChild(tr);
     for(var i = 0; i < pi.length; i++){
         var primes = document.createElement('text');
-        primes.innerHTML = pi[i];
+        primes.innerHTML = representacaoVar(pi[i]);//pi[i]
         var td = document.createElement('td');
         td.appendChild(primes);
  
@@ -102,6 +43,7 @@ function primeImplicantsChart(pi, mt){
         var c = covered(pi[i]);
      
         for(var j = 0; j < mt.length; j++){
+        
             var txt = document.createElement('text');
              
             txt.innerHTML = '';
@@ -146,7 +88,7 @@ function findPrimeImplicants(tabelas){
 function covered(prime){
     var c = [];
     var traco = [];
-    console.log(prime)
+    //console.log(prime)
     for(var i = 0; i < prime.length; i++){
         if(prime[i] == '-'){
             traco.push(i);
@@ -171,10 +113,18 @@ function covered(prime){
     return c;
 }
  
-function makeTable1(table){
-    // var tab = document.getElementById('tabela');
-    // tab.innerHTML = null;
-    
+function makeTable(table){
+
+    //Faz com que nao redenrize a tabela caso nenhum minitermo seja selecionado
+    var emptyTable = 0;
+    for(var i = 0; i < table.length; i++){
+        if(table[i].length == 0)
+            emptyTable += 1;
+    }
+    if(emptyTable == table.length)
+        return;
+
+    //cria os elementos para construir a tabela
     var tab = document.createElement('table');
     tab.border = '1';
     tab.cellpadding= "5";
@@ -250,74 +200,6 @@ function makeTable1(table){
     }
 }
  
-// function makeTable(table){
-//     var tab = document.getElementById('tabela');
-//     tab.innerHTML = null;
- 
-//             var grupos = document.createElement('text');
-//             grupos.innerHTML = "Grupos";
-//             var m = document.createElement('text');
-//             m.innerHTML = "Minitermos";
-//             var rb = document.createElement('text');
-//             rb.innerHTML = "Representação binária";
- 
-//             var tr = document.createElement('tr');
- 
-//             var td = document.createElement('td');
-//             td.innerHTML = grupos.innerHTML;
-//             tr.appendChild(td);
-         
-//             var td = document.createElement('td');
-//             td.innerHTML = m.innerHTML;
-//             tr.appendChild(td);
-         
-//             var td = document.createElement('td');
-//             td.innerHTML = rb.innerHTML;
-//             tr.appendChild(td);
- 
-//             tab.appendChild(tr);
- 
-//     for(var i = 0; i < table.length; i++){
-//         var cont = 0;
-//         for(var k = 0; k < table[i].length; k++){    
-//             var grupos = document.createElement('text');
-             
-//             if(cont == 0){
-//                 grupos.innerHTML = i+" ";
-//                 cont += 1;
-//             }
- 
-//             var m = document.createElement('text');
-//             m.innerHTML = table[i][k][0]+" ";
-//             var rb = document.createElement('text');
-//             rb.innerHTML = table[i][k][1]+" ";
- 
-//             var pi = document.createElement('text');
-//             pi.innerHTML = representacaoVar(table[i][k][1]);
- 
-//             var tr = document.createElement('tr');
-//             tr.style = "text-align: center";
- 
-//             var td = document.createElement('td');
-//             td.innerHTML = grupos.innerHTML;
-//             tr.appendChild(td);
-         
-//             var td = document.createElement('td');
-//             td.innerHTML = m.innerHTML;
-//             tr.appendChild(td);
-         
-//             var td = document.createElement('td');
-//             td.innerHTML = rb.innerHTML;
-//             tr.appendChild(td);
- 
-//             var td = document.createElement('td');
-//             td.innerHTML = pi.innerHTML;
-//             tr.appendChild(td);
- 
-//             tab.appendChild(tr);
-//         }
-//     }
-// }
  
 function representacaoVar(min){
     var variaveis = 'ABCDEFGHIJK';
@@ -376,28 +258,35 @@ var tabelas = [];
 var primeImpli = [];
 
 var minitermosSemDontCares = [];
+//DontCares
+var dontCares = [];//[2, 9, 15];
+
 var varNum = 0;
 
 function run(){
     tabelas = [];
     minitermosSemDontCares = [];
+    dontCares = [];
     primeImpli = [];
 
 
     //Número de variáveis
     varNum = document.getElementById('numVariaveis').value;
     //Minitermos
-    var m = document.querySelectorAll('#radioContent > div > input');//[0,1,2,5,6,7];//[0,2,3,5,6,7,9,10,12,13,15];
+    var m = document.querySelectorAll('#radioContent > div');//[0,1,2,5,6,7];//[0,2,3,5,6,7,9,10,12,13,15];
     
 
-    for(var i = 0; i < m.length;i++){
-        if(m[i].checked)
-            minitermosSemDontCares.push(parseInt(m[i].id));
+    for(var i = 0; i < m.length; i++){
+        if(m[i].children[0].checked){
+            if(m[i].className == 'dontcare')
+                dontCares.push(parseInt(m[i].children[0].id))
+            else
+                minitermosSemDontCares.push(parseInt(m[i].children[0].id));
+            
+        }
     }
 
-    //DontCares
-    var dontCares = [];//[2, 9, 15];
-
+    
 
     //Minitemos + dontCares
     var minitermos = copyArray([], minitermosSemDontCares);
@@ -426,7 +315,7 @@ function run(){
         grupos[qnt].push([minitermos[i].toString(), miniBin[i], 0]); //Minitermos | Representação binária
     }
     
-    //makeTable1(grupos);
+    //makeTable(grupos);
 
     //STEP 2
 
@@ -467,7 +356,44 @@ function run(){
     
     document.getElementById('tableContent').innerHTML =  '';
     for(var tabs = 0; tabs < tabelas.length; tabs++)
-        makeTable1(tabelas[tabs]);
+        makeTable(tabelas[tabs]);
 
     primeImplicantsChart(primeImpli, minitermosSemDontCares);
+}
+
+function f(){
+    mt = document.getElementById('mt');
+    mt.innerHTML = ''; 
+
+    variaveis = 'ABCDEFGHIJK';
+    text = "F(";
+
+    for(var i = 0; i < varNum; i++){
+        text += variaveis[i]+", ";
+    }
+
+    text = text.substr(0, text.length-1);
+    text += ") = &#8721 m(";
+
+    for(var i = 0; i < minitermosSemDontCares.length; i++){
+        text += minitermosSemDontCares[i].toString()+',';
+    }
+    
+    text = text.substr(0, text.length-1);
+    text += ") + &#8721 d(";
+
+    for(var i = 0; i < dontCares.length; i++){
+        text += dontCares[i].toString()+',';
+    }
+
+    text = text.substr(0, text.length-1);
+    text += ')';
+
+
+    p = document.createElement('p');
+    p.innerHTML = text;
+    mt.appendChild(p);
+
+    return text;
+   
 }
